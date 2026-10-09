@@ -229,6 +229,13 @@ input:focus { border-color: var(--accent); }
 /* Goals */
 .goals-section { margin-bottom: 16px; }
 .goals-section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+
+/* Milestone editor */
+.ms-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.ms-row input[type=text]   { flex: 2; }
+.ms-row input[type=number] { flex: 1; min-width: 0; }
+.ms-del { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px; line-height: 1; flex-shrink: 0; }
+.ms-del:hover { color: var(--red); }
 </style>
 </head>
 <body>
@@ -405,6 +412,15 @@ input:focus { border-color: var(--accent); }
         </div>
       </div>
       <button class="btn btn-primary" onclick="saveGoals()" style="width:100%">Save Changes</button>
+
+      <div class="goals-section" style="margin-top:16px">
+        <div class="goals-section-title">Visibility Milestones</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:10px">Customise the milestones shown on your Progress tab. Each row is a name + the body fat % it's reached at.</p>
+        <div id="msEditor"></div>
+        <button class="btn btn-ghost" onclick="addMilestoneRow()" style="width:100%;margin-top:6px;font-size:13px">+ Add Milestone</button>
+        <button class="btn btn-primary" onclick="saveMilestones()" style="width:100%;margin-top:8px">Save Milestones</button>
+      </div>
+
       <button class="btn btn-danger" onclick="confirmDeleteProfile()" style="width:100%;margin-top:10px">Delete My Profile & Data</button>
     </div>
   </div>
@@ -887,7 +903,8 @@ async function renderProgress() {
 
     // Milestones
     const latestBf = docs.filter(d=>d.bf).slice(-1)[0]?.bf || profile.startBf;
-    document.getElementById('milestoneList').innerHTML = MILESTONES.map(m => {
+    const milestones = getUserMilestones().slice().sort((a,b) => b.bf - a.bf);
+    document.getElementById('milestoneList').innerHTML = milestones.map(m => {
       const done = latestBf <= m.bf;
       return `<div class="milestone-item">
         <div class="milestone-check${done?' done':''}">  ${done?'✓':''}</div>
@@ -912,6 +929,7 @@ function fillGoalsForm() {
   document.getElementById('goalsStartBf').value   = profile.startBf    || '';
   document.getElementById('goalsLeanMass').value  = profile.leanMass   || '';
   document.getElementById('goalsWeeklyLoss').value= profile.weeklyLoss || '';
+  fillMilestoneEditor();
 }
 
 async function saveGoals() {
@@ -944,6 +962,67 @@ async function confirmDeleteProfile() {
     await batch.commit();
     showHome();
   } catch(e) { alert('Could not delete. Try again.'); }
+}
+
+// ── MILESTONES EDITOR ────────────────────────────────────────────────────────
+const DEFAULT_MILESTONES = [
+  { name: 'Arms visible at rest',       bf: 38 },
+  { name: 'Hourglass shape emerging',   bf: 36 },
+  { name: 'Stomach noticeably flatter', bf: 33 },
+  { name: 'Lean, muscular look',        bf: 30 },
+  { name: 'Flat stomach',              bf: 25 },
+  { name: 'Abs visible',               bf: 20 },
+];
+
+function getUserMilestones() {
+  return (profile && profile.milestones && profile.milestones.length)
+    ? profile.milestones
+    : DEFAULT_MILESTONES;
+}
+
+function fillMilestoneEditor() {
+  const milestones = getUserMilestones();
+  document.getElementById('msEditor').innerHTML = milestones.map((m, i) =>
+    `<div class="ms-row" id="msrow-${i}">
+      <input type="text"   value="${m.name}" placeholder="Milestone name" id="ms-name-${i}">
+      <input type="number" value="${m.bf}"   placeholder="BF%" step="0.1" id="ms-bf-${i}" style="width:70px">
+      <button class="ms-del" onclick="removeMilestoneRow(${i})">×</button>
+    </div>`
+  ).join('');
+}
+
+function addMilestoneRow() {
+  const editor = document.getElementById('msEditor');
+  const i = editor.children.length;
+  const div = document.createElement('div');
+  div.className = 'ms-row';
+  div.id = `msrow-${i}`;
+  div.innerHTML = `
+    <input type="text"   placeholder="Milestone name" id="ms-name-${i}">
+    <input type="number" placeholder="BF%" step="0.1"  id="ms-bf-${i}" style="width:70px">
+    <button class="ms-del" onclick="this.parentElement.remove()">×</button>`;
+  editor.appendChild(div);
+}
+
+function removeMilestoneRow(i) {
+  const row = document.getElementById(`msrow-${i}`);
+  if (row) row.remove();
+}
+
+async function saveMilestones() {
+  if (currentUid !== currentUser?.uid) return;
+  const rows = document.getElementById('msEditor').querySelectorAll('.ms-row');
+  const milestones = [];
+  rows.forEach(row => {
+    const nameEl = row.querySelector('input[type=text]');
+    const bfEl   = row.querySelector('input[type=number]');
+    const name = nameEl?.value.trim();
+    const bf   = parseFloat(bfEl?.value);
+    if (name && !isNaN(bf)) milestones.push({ name, bf });
+  });
+  if (!milestones.length) { alert('Add at least one milestone'); return; }
+  await profileDoc(currentUid).update({ milestones, updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+  alert('Milestones saved ✓');
 }
 
 // ── TABS ─────────────────────────────────────────────────────────────────────
