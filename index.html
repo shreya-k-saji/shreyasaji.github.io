@@ -201,15 +201,7 @@ input:focus { border-color: var(--accent); }
 .deficit-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(52,211,153,.15); border: 1px solid rgba(52,211,153,.4); border-radius: 20px; padding: 5px 12px; font-size: 13px; font-weight: 600; color: var(--green); }
 .deficit-badge.surplus { background: rgba(248,113,113,.15); border-color: rgba(248,113,113,.4); color: var(--red); }
 
-/* History */
-.hist-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
-.hist-item:last-child { border-bottom: none; }
-.hist-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-.hist-date { font-size: 13px; font-weight: 600; }
-.hist-cal { font-size: 14px; font-weight: 700; }
-.hist-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.hist-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); }
-.hist-sub { display: flex; gap: 12px; margin-top: 5px; font-size: 11px; color: var(--muted); }
+/* History — moved to past-day/expandable section below */
 
 /* Milestones */
 .milestone-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
@@ -221,6 +213,28 @@ input:focus { border-color: var(--accent); }
 
 /* Chart containers */
 .chart-container { position: relative; height: 200px; margin-bottom: 8px; }
+
+/* Past-day editing banner */
+.past-banner { background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.4); border-radius: 10px; padding: 10px 14px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.past-banner-text { font-size: 13px; color: var(--yellow); font-weight: 600; }
+.past-banner-back { background: none; border: 1px solid rgba(251,191,36,0.5); border-radius: 8px; padding: 4px 10px; color: var(--yellow); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+
+/* Expandable history */
+.hist-item { padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.hist-item:last-child { border-bottom: none; }
+.hist-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.hist-date { font-size: 13px; font-weight: 600; }
+.hist-cal { font-size: 14px; font-weight: 700; }
+.hist-bar-bg { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.hist-bar-fill { height: 100%; border-radius: 3px; background: var(--accent); }
+.hist-sub { display: flex; gap: 12px; margin-top: 5px; font-size: 11px; color: var(--muted); flex-wrap: wrap; }
+.hist-expand { display: none; padding-top: 10px; }
+.hist-expand.open { display: block; }
+.hist-food-item { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.hist-food-item:last-child { border-bottom: none; }
+.hist-food-name { color: var(--text); }
+.hist-food-cal { color: var(--accent); font-weight: 600; }
+.hist-edit-btn { width: 100%; margin-top: 10px; font-size: 12px; padding: 8px; }
 
 /* Save bar */
 .save-bar { position: sticky; bottom: 72px; background: var(--surface); border-top: 1px solid var(--border); padding: 10px 16px; z-index: 9; }
@@ -236,6 +250,31 @@ input:focus { border-color: var(--accent); }
 .ms-row input[type=number] { flex: 1; min-width: 0; }
 .ms-del { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px; line-height: 1; flex-shrink: 0; }
 .ms-del:hover { color: var(--red); }
+
+/* Modal tabs */
+.modal-tabs { display: flex; border-bottom: 1px solid var(--border); margin: -4px -4px 14px; }
+.modal-tab { flex: 1; background: none; border: none; padding: 10px 4px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
+.modal-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.modal-pane { display: none; }
+.modal-pane.active { display: block; }
+
+/* AI meal analyzer */
+.ai-textarea { width: 100%; min-height: 90px; resize: vertical; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: 14px; font-family: inherit; outline: none; transition: border-color .2s; }
+.ai-textarea:focus { border-color: var(--accent); }
+.ai-hint { font-size: 11px; color: var(--muted); margin: 5px 0 10px; line-height: 1.5; }
+.ai-loading { display: none; text-align: center; padding: 20px 0; color: var(--muted); font-size: 13px; }
+.ai-loading.show { display: block; }
+.ai-results { display: none; }
+.ai-results.show { display: block; }
+.ai-item { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.ai-item:last-child { border-bottom: none; }
+.ai-item-name { font-size: 13px; font-weight: 600; }
+.ai-item-macros { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.ai-item-cal { font-size: 13px; font-weight: 700; color: var(--accent); }
+.ai-total-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 2px; }
+.ai-total-label { font-size: 13px; font-weight: 700; }
+.ai-total-val { font-size: 15px; font-weight: 800; color: var(--accent); }
+.ai-error { color: var(--red); font-size: 13px; padding: 10px 0; }
 </style>
 </head>
 <body>
@@ -321,6 +360,12 @@ input:focus { border-color: var(--accent); }
 
   <!-- TODAY -->
   <div class="tab-content active" id="tab-today">
+    <div id="pastDayBanner" style="display:none;padding:0 0 0 0">
+      <div class="past-banner">
+        <span class="past-banner-text" id="pastBannerText">📅 Editing past day</span>
+        <button class="past-banner-back" onclick="returnToToday()">← Back to Today</button>
+      </div>
+    </div>
     <div class="card">
       <div class="card-title">Calories Today</div>
       <div class="donut-wrap"><canvas id="donutChart"></canvas>
@@ -421,6 +466,17 @@ input:focus { border-color: var(--accent); }
         <button class="btn btn-primary" onclick="saveMilestones()" style="width:100%;margin-top:8px">Save Milestones</button>
       </div>
 
+      <div class="goals-section" style="margin-top:16px">
+        <div class="goals-section-title">✨ AI Settings (Gemini)</div>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5">Paste your OpenAI API key to enable AI calorie analysis. Get one free at <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--accent)">platform.openai.com/api-keys</a> → Create new secret key.</p>
+        <div class="form-group" style="margin-bottom:8px">
+          <label class="form-label">OpenAI API Key</label>
+          <input type="password" id="geminiKeyInput" placeholder="sk-…" style="font-family:monospace;font-size:13px">
+        </div>
+        <button class="btn btn-ghost" onclick="saveGeminiKey()" style="width:100%;font-size:13px">Save API Key</button>
+        <p id="geminiKeyStatus" style="font-size:11px;color:var(--green);margin-top:6px;display:none">✓ Key saved on this device</p>
+      </div>
+
       <button class="btn btn-danger" onclick="confirmDeleteProfile()" style="width:100%;margin-top:10px">Delete My Profile & Data</button>
     </div>
   </div>
@@ -437,19 +493,53 @@ input:focus { border-color: var(--accent); }
 <div class="modal-overlay" id="addFoodModal">
   <div class="modal-sheet">
     <div class="modal-title">Add Food</div>
-    <div class="form-group" style="margin-bottom:10px">
-      <label class="form-label">Food Name</label>
-      <input type="text" id="foodName" placeholder="e.g. Chicken Breast">
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchModalTab('manual',this)">✏️ Manual</button>
+      <button class="modal-tab" onclick="switchModalTab('ai',this)">✨ AI Analyse</button>
     </div>
-    <div class="modal-grid">
-      <div class="form-group"><label class="form-label">Calories (kcal)</label><input type="number" id="foodCal" placeholder="0"></div>
-      <div class="form-group"><label class="form-label">Protein (g)</label><input type="number" id="foodProtein" placeholder="0"></div>
-      <div class="form-group"><label class="form-label">Carbs (g)</label><input type="number" id="foodCarbs" placeholder="0"></div>
-      <div class="form-group"><label class="form-label">Fat (g)</label><input type="number" id="foodFat" placeholder="0"></div>
+
+    <!-- Manual pane -->
+    <div class="modal-pane active" id="pane-manual">
+      <div class="form-group" style="margin-bottom:10px">
+        <label class="form-label">Food Name</label>
+        <input type="text" id="foodName" placeholder="e.g. Chicken Breast">
+      </div>
+      <div class="modal-grid">
+        <div class="form-group"><label class="form-label">Calories (kcal)</label><input type="number" id="foodCal" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">Protein (g)</label><input type="number" id="foodProtein" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">Carbs (g)</label><input type="number" id="foodCarbs" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">Fat (g)</label><input type="number" id="foodFat" placeholder="0"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeAddFood()" style="flex:1">Cancel</button>
+        <button class="btn btn-primary" onclick="addFood()" style="flex:2">Add to Log</button>
+      </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeAddFood()" style="flex:1">Cancel</button>
-      <button class="btn btn-primary" onclick="addFood()" style="flex:2">Add to Log</button>
+
+    <!-- AI pane -->
+    <div class="modal-pane" id="pane-ai">
+      <p class="ai-hint">Describe your meal component by component. e.g.<br><em>"2 rotis, 1 cup dal, 100g chicken curry, 1 tbsp ghee"</em></p>
+      <textarea class="ai-textarea" id="aiMealText" placeholder="Type your meal here…"></textarea>
+      <div class="modal-actions" style="margin-top:10px">
+        <button class="btn btn-ghost" onclick="closeAddFood()" style="flex:1">Cancel</button>
+        <button class="btn btn-primary" onclick="analyseWithAI()" style="flex:2">✨ Analyse</button>
+      </div>
+      <div class="ai-loading" id="aiLoading">
+        <div class="spinner" style="margin:0 auto 8px"></div>
+        Analysing your meal…
+      </div>
+      <div class="ai-results" id="aiResults">
+        <div style="margin:12px 0 4px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px">Breakdown</div>
+        <div id="aiItemList"></div>
+        <div class="ai-total-row">
+          <span class="ai-total-label">Total Meal</span>
+          <span class="ai-total-val" id="aiTotalText">—</span>
+        </div>
+        <div class="modal-actions" style="margin-top:10px">
+          <button class="btn btn-ghost" onclick="clearAIResults()" style="flex:1">Try Again</button>
+          <button class="btn btn-primary" onclick="addAIMeal()" style="flex:2">Add as Meal ✓</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -470,7 +560,11 @@ const db   = firebase.firestore();
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const TODAY  = new Date().toISOString().slice(0,10);
+function localDateStr(d) {
+  d = d || new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+const TODAY = localDateStr();
 const MILESTONES = [
   { name: 'Arms visible at rest',        bf: 38 },
   { name: 'Hourglass shape emerging',    bf: 36 },
@@ -488,6 +582,7 @@ let todayData = { meals: [], weight: null, waist: null, bf: null };
 let allLogs = [];
 let unsubs  = [];
 let activeTab = 'today';
+let activeDate = TODAY; // may be overridden when editing a past day
 let donutChart = null, weightChart = null, calChart = null, miniChart = null;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -619,10 +714,14 @@ async function openProfile(uid) {
   });
   unsubs.push(u1);
 
-  // Subscribe: today's log
+  // Subscribe: today's log (always reset to real today when opening a profile)
+  activeDate = TODAY;
+  hidePastBanner();
   const u2 = logsCol(uid).doc(TODAY).onSnapshot(snap => {
-    todayData = snap.data() || { meals: [], weight: null, waist: null, bf: null };
-    refreshTodayUI();
+    if (activeDate === TODAY) {
+      todayData = snap.data() || { meals: [], weight: null, waist: null, bf: null };
+      refreshTodayUI();
+    }
   });
   unsubs.push(u2);
 
@@ -773,6 +872,11 @@ async function loadAllLogs() {
 // ── FOOD ─────────────────────────────────────────────────────────────────────
 function openAddFood() {
   ['foodName','foodCal','foodProtein','foodCarbs','foodFat'].forEach(id => document.getElementById(id).value='');
+  // Reset to manual tab
+  document.querySelectorAll('.modal-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.getElementById('pane-manual').classList.add('active');
+  document.getElementById('pane-ai').classList.remove('active');
+  clearAIResults();
   document.getElementById('addFoodModal').classList.add('open');
   document.getElementById('foodName').focus();
 }
@@ -815,8 +919,8 @@ async function saveMetrics() {
 }
 
 async function saveTodayDoc(patch) {
-  const updated = { ...todayData, ...patch, date: TODAY };
-  await logsCol(currentUid).doc(TODAY).set(updated, { merge: true });
+  const updated = { ...todayData, ...patch, date: activeDate };
+  await logsCol(currentUid).doc(activeDate).set(updated, { merge: true });
 }
 
 async function updatePublicDays() {
@@ -851,22 +955,68 @@ async function loadHistory() {
     const snap = await logsCol(currentUid).orderBy('date','desc').limit(30).get();
     const docs = snap.docs.map(d => d.data());
     if (!docs.length) { el.innerHTML = '<p style="text-align:center;color:var(--muted);padding:16px;font-size:13px">No logs yet</p>'; return; }
-    el.innerHTML = docs.map(d => {
+    el.innerHTML = docs.map((d, idx) => {
       const cal     = (d.meals||[]).reduce((a,m)=>a+(+m.cal||0),0);
       const protein = (d.meals||[]).reduce((a,m)=>a+(+m.protein||0),0);
       const pct     = Math.min(100, Math.round(cal / (profile.calorieGoal||1) * 100));
-      return `<div class="hist-item">
-        <div class="hist-top"><span class="hist-date">${formatDate(d.date)}</span><span class="hist-cal">${Math.round(cal)} kcal</span></div>
+      const isPast  = d.date !== TODAY;
+      const foodRows = (d.meals||[]).length
+        ? (d.meals||[]).map(m => `<div class="hist-food-item"><span class="hist-food-name">${m.name}</span><span class="hist-food-cal">${m.cal} kcal · P:${m.protein}g C:${m.carbs}g F:${m.fat}g</span></div>`).join('')
+        : '<p style="font-size:12px;color:var(--muted);padding:4px 0">No food logged</p>';
+      return `<div class="hist-item" onclick="toggleHistExpand(${idx})">
+        <div class="hist-top">
+          <span class="hist-date">${formatDate(d.date)}${d.date===TODAY?' (today)':''}</span>
+          <span class="hist-cal">${Math.round(cal)} kcal</span>
+        </div>
         <div class="hist-bar-bg"><div class="hist-bar-fill" style="width:${pct}%"></div></div>
         <div class="hist-sub">
           <span>Protein: ${Math.round(protein)}g</span>
-          ${d.weight ? `<span>Weight: ${d.weight}kg</span>` : ''}
-          ${d.bf     ? `<span>BF: ${d.bf}%</span>`         : ''}
+          ${d.weight ? `<span>⚖️ ${d.weight}kg</span>` : ''}
+          ${d.bf     ? `<span>BF: ${d.bf}%</span>`     : ''}
           <span>${pct}% of goal</span>
+        </div>
+        <div class="hist-expand" id="hist-expand-${idx}">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px">Food Log</div>
+          ${foodRows}
+          ${currentUid===currentUser?.uid && isPast ? `<button class="btn btn-ghost hist-edit-btn" onclick="event.stopPropagation();editPastDay('${d.date}')">✏️ Edit this day</button>` : ''}
         </div>
       </div>`;
     }).join('');
   } catch(e) { el.innerHTML = '<p style="color:var(--muted);text-align:center;padding:16px;font-size:13px">Could not load history</p>'; }
+}
+
+function toggleHistExpand(idx) {
+  const el = document.getElementById(`hist-expand-${idx}`);
+  if (el) el.classList.toggle('open');
+}
+
+// ── PAST DAY EDITING ─────────────────────────────────────────────────────────
+function hidePastBanner() {
+  document.getElementById('pastDayBanner').style.display = 'none';
+  document.getElementById('saveBarToday').querySelector('button').textContent = '💾 Save Today\'s Log';
+}
+
+async function editPastDay(date) {
+  activeDate = date;
+  // Load that day's data
+  const snap = await logsCol(currentUid).doc(date).get();
+  todayData = snap.data() || { meals: [], weight: null, waist: null, bf: null };
+  // Switch to Today tab and show banner
+  switchTab('today', document.querySelector('.nav-btn'));
+  document.getElementById('pastDayBanner').style.display = 'block';
+  document.getElementById('pastBannerText').textContent = `📅 Editing: ${formatDate(date)}`;
+  document.getElementById('saveBarToday').querySelector('button').textContent = `💾 Save ${formatDate(date)}`;
+  refreshTodayUI();
+}
+
+function returnToToday() {
+  activeDate = TODAY;
+  hidePastBanner();
+  // Reload today's real data from Firestore
+  logsCol(currentUid).doc(TODAY).get().then(snap => {
+    todayData = snap.data() || { meals: [], weight: null, waist: null, bf: null };
+    refreshTodayUI();
+  });
 }
 
 // ── PROGRESS ─────────────────────────────────────────────────────────────────
@@ -1025,6 +1175,160 @@ async function saveMilestones() {
   alert('Milestones saved ✓');
 }
 
+// ── AI MEAL ANALYSER ─────────────────────────────────────────────────────────
+let aiParsedMeal = null; // { name, cal, protein, carbs, fat, items[] }
+
+function switchModalTab(name, btn) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.modal-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-'+name).classList.add('active');
+}
+
+function getGeminiKey() { return localStorage.getItem('gemini_api_key') || ''; }
+
+function saveGeminiKey() {
+  const key = document.getElementById('geminiKeyInput').value.trim();
+  if (!key) { alert('Please enter an API key'); return; }
+  localStorage.setItem('gemini_api_key', key);
+  document.getElementById('geminiKeyStatus').style.display = 'block';
+  document.getElementById('geminiKeyInput').value = '';
+}
+
+function loadGeminiKeyField() {
+  const key = getGeminiKey();
+  const status = document.getElementById('geminiKeyStatus');
+  if (key) {
+    status.style.display = 'block';
+    status.textContent = '✓ Key saved on this device';
+  } else {
+    status.style.display = 'none';
+  }
+}
+
+async function analyseWithAI() {
+  const text = document.getElementById('aiMealText').value.trim();
+  if (!text) { alert('Please describe your meal first'); return; }
+
+  const apiKey = getGeminiKey();
+  if (!apiKey) {
+    alert('Please add your Gemini API key in the Goals tab → AI Settings first.');
+    return;
+  }
+
+  document.getElementById('aiLoading').classList.add('show');
+  document.getElementById('aiResults').classList.remove('show');
+  aiParsedMeal = null;
+
+  const prompt = `You are a world-class nutrition expert. Analyse the following meal description and return ONLY a valid JSON object — no markdown, no code fences, no extra text.
+
+Meal: "${text}"
+
+Return this exact JSON shape:
+{
+  "mealName": "brief meal name (e.g. Indian lunch)",
+  "items": [
+    {
+      "name": "component name with quantity",
+      "calories": <number>,
+      "protein": <number in grams>,
+      "carbs": <number in grams>,
+      "fat": <number in grams>
+    }
+  ],
+  "total": {
+    "calories": <sum>,
+    "protein": <sum>,
+    "carbs": <sum>,
+    "fat": <sum>
+  }
+}
+
+Rules:
+- Use USDA / Indian food composition standards
+- Calories must equal protein*4 + carbs*4 + fat*9 (approx)
+- All numbers must be integers or one decimal
+- If quantity is ambiguous use standard serving sizes
+- Include every component separately`;
+
+  try {
+    const resp = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        temperature: 0.1,
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      const msg = err?.error?.message || `HTTP ${resp.status}`;
+      if (resp.status === 401) throw new Error('Invalid API key — check Goals → AI Settings.');
+      if (resp.status === 429) throw new Error('Rate limit reached. Wait a moment and try again.');
+      throw new Error(msg);
+    }
+    const json = await resp.json();
+    let raw = json.choices?.[0]?.message?.content || '';
+    // Strip any accidental markdown fences
+    raw = raw.replace(/```json\s*/gi,'').replace(/```\s*/gi,'').trim();
+    const data = JSON.parse(raw);
+    aiParsedMeal = data;
+    renderAIResults(data);
+  } catch(e) {
+    document.getElementById('aiItemList').innerHTML = `<p class="ai-error">⚠️ ${e.message || 'Could not analyse. Check your key and try again.'}</p>`;
+    document.getElementById('aiTotalText').textContent = '';
+    document.getElementById('aiResults').classList.add('show');
+  } finally {
+    document.getElementById('aiLoading').classList.remove('show');
+  }
+}
+
+function renderAIResults(data) {
+  const items = data.items || [];
+  document.getElementById('aiItemList').innerHTML = items.map(item => `
+    <div class="ai-item">
+      <div>
+        <div class="ai-item-name">${item.name}</div>
+        <div class="ai-item-macros">P:${item.protein}g · C:${item.carbs}g · F:${item.fat}g</div>
+      </div>
+      <div class="ai-item-cal">${item.calories} kcal</div>
+    </div>`
+  ).join('');
+  const t = data.total || {};
+  document.getElementById('aiTotalText').textContent =
+    `${t.calories||0} kcal · P:${t.protein||0}g · C:${t.carbs||0}g · F:${t.fat||0}g`;
+  document.getElementById('aiResults').classList.add('show');
+}
+
+function clearAIResults() {
+  document.getElementById('aiResults').classList.remove('show');
+  document.getElementById('aiMealText').value = '';
+  aiParsedMeal = null;
+}
+
+async function addAIMeal() {
+  if (!aiParsedMeal) return;
+  if (currentUid !== currentUser?.uid) { alert("You can only edit your own profile."); return; }
+  const t = aiParsedMeal.total || {};
+  const meal = {
+    id:      Date.now().toString(),
+    name:    aiParsedMeal.mealName || 'AI Meal',
+    cal:     Math.round(t.calories || 0),
+    protein: Math.round(t.protein  || 0),
+    carbs:   Math.round(t.carbs    || 0),
+    fat:     Math.round(t.fat      || 0),
+  };
+  closeAddFood();
+  const meals = [...(todayData.meals||[]), meal];
+  await saveTodayDoc({ meals });
+  await updatePublicDays();
+}
+
 // ── TABS ─────────────────────────────────────────────────────────────────────
 function switchTab(name, btn) {
   activeTab = name;
@@ -1035,7 +1339,7 @@ function switchTab(name, btn) {
   document.getElementById('saveBarToday').style.display = name==='today' ? 'block' : 'none';
   if (name==='history') loadHistory();
   if (name==='progress') renderProgress();
-  if (name==='goals') fillGoalsForm();
+  if (name==='goals') { fillGoalsForm(); loadGeminiKeyField(); }
 }
 </script>
 </body>
