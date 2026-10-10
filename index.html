@@ -921,6 +921,11 @@ async function saveMetrics() {
 async function saveTodayDoc(patch) {
   const updated = { ...todayData, ...patch, date: activeDate };
   await logsCol(currentUid).doc(activeDate).set(updated, { merge: true });
+  // For past days there's no live listener — update local state manually
+  if (activeDate !== TODAY) {
+    todayData = updated;
+    refreshTodayUI();
+  }
 }
 
 async function updatePublicDays() {
